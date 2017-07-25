@@ -1,0 +1,49 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:1.5.4.RELEASE')
+        classpath('se.transmode.gradle:gradle-docker:1.2')
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'docker'
+
+group = 'springio'
+
+jar {
+    baseName = 'gs-spring-boot-docker'
+    version = '0.1.0'
+}
+
+task buildDocker(type: Docker, dependsOn: build) {
+    push = true
+    applicationName = jar.baseName
+    dockerfile = file('Dockerfile')
+    doFirst {
+        copy {
+            from jar
+            into "build/docker/target"
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile "org.springframework.data:spring-data-neo4j:4.2.4.RELEASE"
+    compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.57'
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
