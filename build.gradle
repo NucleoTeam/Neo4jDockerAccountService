@@ -17,7 +17,7 @@ apply plugin: 'docker'
 group = 'nucleoteam'
 
 jar {
-    baseName = 'Neo4jDockerAccountService'
+    baseName = 'neo4jdockeraccountservice'
     version = '0.1.0'
 }
 
