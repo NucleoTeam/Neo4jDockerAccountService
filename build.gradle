@@ -14,10 +14,10 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'docker'
 
-group = 'springio'
+group = 'firestar'
 
 jar {
-    baseName = 'gs-spring-boot-docker'
+    baseName = 'Neo4jDockerAccountService'
     version = '0.1.0'
 }
 
