@@ -38,4 +38,21 @@ public class Authentication {
             return null;
         }
     }
+    @RequestMapping("/create")
+    public Account create(@RequestBody AccountRequest accountRequest){
+        String user = accountRequest.getUser();
+        String password = accountRequest.getPassword();
+        if(!AccountRules.password(password) || !AccountRules.user(user)){
+            return null;
+        }
+        if(accountRepository.getAccountByUser(user)==null) {
+            Account account = new Account();
+            account.setUser(user);
+            account.setPassword(password);
+            accountRepository.save(account);
+            return account;
+        }else{
+            return null;
+        }
+    }
 }
