@@ -3,7 +3,16 @@ pipeline {
   stages {
     stage('BeginProcess') {
       steps {
-        echo 'Building Neo4jAccountLibrary'
+        parallel(
+          "BeginProcess": {
+            echo 'Building Neo4jAccountLibrary'
+            
+          },
+          "": {
+            sh 'rm -rf dockerbuild/'
+            
+          }
+        )
       }
     }
     stage('Build') {
