@@ -8,7 +8,7 @@ pipeline {
             echo 'Building Neo4jAccountLibrary'
             
           },
-          "": {
+          "error": {
             sh 'rm -rf dockerbuild/'
             
           }
@@ -28,7 +28,7 @@ pipeline {
 cp build/libs/*.jar dockerbuild/app.jar 
 cp Dockerfile dockerbuild/Dockerfile
 cd dockerbuild/
-docker build'''
+docker build ./'''
             
           },
           "Save Artifact": {
