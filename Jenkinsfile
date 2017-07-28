@@ -15,7 +15,7 @@ pipeline {
       steps {
         parallel(
           "Build Docker Image": {
-            sh './gradlew buildDocker'
+            sh 'docker build'
             
           },
           "Save Artifact": {
