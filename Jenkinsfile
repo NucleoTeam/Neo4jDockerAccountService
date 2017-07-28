@@ -11,7 +11,7 @@ pipeline {
         sh 'chmod 0755 ./gradlew;./gradlew clean build'
       }
     }
-    stage('') {
+    stage('error') {
       steps {
         parallel(
           "Build Docker Image": {
