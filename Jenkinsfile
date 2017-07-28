@@ -11,5 +11,19 @@ pipeline {
         sh 'chmod 0755 ./gradlew;./gradlew clean build'
       }
     }
+    stage('') {
+      steps {
+        parallel(
+          "Build Docker Image": {
+            sh './gradlew buildDocker'
+            
+          },
+          "Save Artifact": {
+            archiveArtifacts '*.jar'
+            
+          }
+        )
+      }
+    }
   }
 }
