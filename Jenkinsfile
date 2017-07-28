@@ -28,7 +28,7 @@ pipeline {
 cp build/libs/*.jar dockerbuild/app.jar 
 cp Dockerfile dockerbuild/Dockerfile
 cd dockerbuild/
-docker build - < Dockerfile'''
+docker build -f Dockerfile'''
             
           },
           "Save Artifact": {
