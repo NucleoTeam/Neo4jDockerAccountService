@@ -15,11 +15,15 @@ pipeline {
       steps {
         parallel(
           "Build Docker Image": {
-            sh 'cd build/docker;docker build '
+            sh '''mkdir dockerbuild/
+cp build/libs/*.jar dockerbuild/app.jar 
+cp Dockerfile dockerbuild/Dockerfile
+cd dockerbuild/
+docker build'''
             
           },
           "Save Artifact": {
-            archiveArtifacts '*.jar'
+            archiveArtifacts 'build/libs/*.jar'
             
           }
         )
