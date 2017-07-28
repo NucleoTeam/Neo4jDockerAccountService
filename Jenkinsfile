@@ -11,5 +11,10 @@ pipeline {
         sh 'chmod 0755 ./gradlew;./gradlew clean build'
       }
     }
+    stage('') {
+      steps {
+        build 'clean build'
+      }
+    }
   }
 }
