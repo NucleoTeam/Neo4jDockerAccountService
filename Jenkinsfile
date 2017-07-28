@@ -4,7 +4,11 @@ pipeline {
     stage('BeginProcess') {
       steps {
         echo 'Building Neo4jAccountLibrary'
-        sh './gradlew clean build buildDocker'
+      }
+    }
+    stage('Build') {
+      steps {
+        sh 'chmod 0755 ./gradlew;./gradlew clean build'
       }
     }
   }
