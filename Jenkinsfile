@@ -24,11 +24,7 @@ pipeline {
       steps {
         parallel(
           "Build Docker Image": {
-            sh '''mkdir dockerbuild/
-cp build/libs/*.jar dockerbuild/app.jar 
-cp Dockerfile dockerbuild/Dockerfile
-cd dockerbuild/
-sudo docker build .'''
+            sh './gradlew buildDocker'
             
           },
           "Save Artifact": {
