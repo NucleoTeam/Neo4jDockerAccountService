@@ -15,7 +15,7 @@ pipeline {
       steps {
         parallel(
           "Build Docker Image": {
-            sh 'docker build'
+            sh 'cd build/docker;docker build '
             
           },
           "Save Artifact": {
