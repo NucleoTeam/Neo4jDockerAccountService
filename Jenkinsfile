@@ -17,7 +17,8 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh '''chmod 0755 ./gradlew
+        sh '''rm -rf $HOME/.gradle/caches/
+chmod 0755 ./gradlew
 ./gradlew clean build --refresh-dependencies'''
       }
     }
