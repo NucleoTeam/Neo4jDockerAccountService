@@ -10,25 +10,23 @@ pipeline {
           },
           "error": {
             sh 'rm -rf dockerbuild/'
-            
           }
         )
       }
     }
     stage('Build') {
       steps {
-        sh '''rm -rf $HOME/.gradle/caches/;chmod 0755 ./gradlew;./gradlew clean build --refresh-dependencies'''
+        sh 'rm -rf $HOME/.gradle/caches/;chmod 0755 ./gradlew;./gradlew clean build --refresh-dependencies'
       }
     }
     stage('Docker Build') {
       steps {
         parallel(
           "Build Docker Image": {
-            sh '''mkdir dockerbuild/;cp build/libs/*.jar dockerbuild/app.jar;cp Dockerfile dockerbuild/Dockerfile;cd dockerbuild/;docker build ./'''
+            sh 'mkdir dockerbuild/;cp build/libs/*.jar dockerbuild/app.jar;cp Dockerfile dockerbuild/Dockerfile;cd dockerbuild/;docker build ./'
           },
           "Save Artifact": {
             archiveArtifacts(artifacts: 'build/libs/*.jar', onlyIfSuccessful: true)
-            
           }
         )
       }
