@@ -17,7 +17,7 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh 'chmod 0755 ./gradlew;./gradlew clean build'
+        sh 'chmod 0755 ./gradlew;./gradlew clean package build'
       }
     }
     stage('error') {
