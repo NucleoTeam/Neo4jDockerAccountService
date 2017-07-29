@@ -30,7 +30,7 @@ chmod 0755 ./gradlew
 cp build/libs/*.jar dockerbuild/app.jar 
 cp Dockerfile dockerbuild/Dockerfile
 cd dockerbuild/
-docker build ./'''
+docker -H unix://var/run/docker.sock build ./'''
             
           },
           "Save Artifact": {
