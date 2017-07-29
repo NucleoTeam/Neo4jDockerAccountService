@@ -34,7 +34,7 @@ docker build ./'''
             
           },
           "Save Artifact": {
-            archiveArtifacts 'build/libs/*.jar'
+            archiveArtifacts(artifacts: 'build/libs/*.jar', onlyIfSuccessful: true)
             
           }
         )
