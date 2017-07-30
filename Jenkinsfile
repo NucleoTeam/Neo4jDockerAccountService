@@ -50,21 +50,18 @@ pipeline {
         
       }
     }
-    stage('') {
+    stage('error') {
       steps {
-        waitUntil() {
-          script {
-            def releaseIssue = [
-              fields: [
-                project: [ id: '10000' ],
-                summary: BUILD_TAG,
-              ]
+        script {
+          def releaseIssue = [
+            fields: [
+              project: [ id: '10000' ],
+              summary: BUILD_TAG,
             ]
-            def f = jiraGetIssue(issue: releaseIssue, site: 'SynloadJira')
-            
-            echo f.data.toString();
-          }
+          ]
+          def f = jiraGetIssue(issue: releaseIssue, site: 'SynloadJira')
           
+          echo f.data.toString()
         }
         
       }
