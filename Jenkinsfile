@@ -30,6 +30,10 @@ pipeline {
           "Save Artifact": {
             archiveArtifacts(artifacts: 'build/libs/*.jar', onlyIfSuccessful: true)
             
+          },
+          "": {
+            sh 'printenv'
+            
           }
         )
       }
@@ -48,8 +52,8 @@ pipeline {
           response = jiraNewIssue issue: releaseIssue, site: 'SynloadJira'
           echo response.data.toString()
           echo response.successful.toString()
-          
         }
+        
       }
     }
   }
