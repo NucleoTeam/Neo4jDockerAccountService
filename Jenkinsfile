@@ -50,13 +50,13 @@ pipeline {
         
       }
     }
-    stage('error') {
+    stage('CheckJira') {
       steps {
         script {
           def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
           
           
-          echo issues.data.toString()
+          echo issues.toString()
         }
         
       }
