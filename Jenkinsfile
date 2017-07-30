@@ -60,7 +60,7 @@ pipeline {
             
           }
           
-          echo issues.data.issues[0].toString()
+          echo issues.data.issues[0].status.toString()
         }
         
       }
