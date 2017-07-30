@@ -43,7 +43,7 @@ pipeline {
               summary: 'Approval For Release',
               description: 'New release has been scheduled on project'+BUILD_TAG+' '+RUN_DISPLAY_URL,
               issuetype: [id: '10002'],
-              custom_tag: BUILD_TAG
+              build_tag: BUILD_TAG
             ]
           ]
           jiraNewIssue(issue: releaseIssue, site: 'SynloadJira')
