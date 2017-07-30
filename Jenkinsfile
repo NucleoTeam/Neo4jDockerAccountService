@@ -96,5 +96,10 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
         sh 'docker push nucleoteam/neo4jdockeraccountservice:latest'
       }
     }
+    stage('Deploy') {
+      steps {
+        rancher(environmentId: 'testapp', ports: '8000:8080', environments: 'testapp-AccountManager-1', confirm: true, image: 'nucleoteam/neo4jdockeraccountservice:latest', service: 'AccountManager', endpoint: 'http://212.47.248.38:8080/v2-beta', credentialId: '7E91270EB8A7FFCED340')
+      }
+    }
   }
 }
