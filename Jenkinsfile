@@ -8,7 +8,7 @@ pipeline {
             echo 'Building Neo4jAccountLibrary'
             
           },
-          "error": {
+          "Delete old build": {
             sh 'rm -rf dockerbuild/'
             
           }
@@ -42,14 +42,18 @@ pipeline {
               project: [ id: '10000' ],
               summary: 'Approval For Release',
               description: 'New release has been scheduled on project'+BUILD_TAG+' '+RUN_DISPLAY_URL,
-              issuetype: [id: '10002']
+              issuetype: [id: '10002'],
+              tag: BUILD_TAG
             ]
           ]
-          response = jiraNewIssue(issue: releaseIssue, site: 'SynloadJira')
-          print response.data.toString()
-          print response.successful.toString()
+          jiraNewIssue(issue: releaseIssue, site: 'SynloadJira')
         }
         
+      }
+    }
+    stage('') {
+      steps {
+        waitUntil()
       }
     }
   }
