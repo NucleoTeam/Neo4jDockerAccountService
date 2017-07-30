@@ -50,5 +50,24 @@ pipeline {
         
       }
     }
+    stage('') {
+      steps {
+        waitUntil() {
+          script {
+            def releaseIssue = [
+              fields: [
+                project: [ id: '10000' ],
+                summary: BUILD_TAG,
+              ]
+            ]
+            def f = jiraGetIssue(issue: releaseIssue, site: 'SynloadJira')
+            
+            echo f.data.toString();
+          }
+          
+        }
+        
+      }
+    }
   }
 }
