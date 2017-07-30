@@ -87,7 +87,7 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
             status: [name: 'Done'],
           ]]
           
-          response = jiraEditIssue idOrKey: issues.data.issues[0].id, issue: newValues
+          response = jiraEditIssue idOrKey: issues.data.issues[0].id, issue: newValues, site: 'SynloadJira'
           
         }
       }
