@@ -30,10 +30,6 @@ pipeline {
           "Save Artifact": {
             archiveArtifacts(artifacts: 'build/libs/*.jar', onlyIfSuccessful: true)
             
-          },
-          "": {
-            sh 'printenv'
-            
           }
         )
       }
@@ -45,7 +41,7 @@ pipeline {
             fields: [
               project: [ id: '10000' ],
               summary: 'Approval For Release',
-              description: 'New release has been scheduled on project x',
+              description: 'New release has been scheduled on project ${BUILD_TAG}',
               issuetype: [id: '10002']
             ]
           ]
