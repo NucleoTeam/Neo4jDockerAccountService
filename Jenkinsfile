@@ -55,9 +55,14 @@ pipeline {
     stage('CheckJira') {
       steps {
         script {
-          def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
-          if(issues.data.total==1){
-            echo issues.data.issues[0].fields.status.toString()
+          def keepGoing = true
+          while(keepGoing ){
+            def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
+            if(issues.data.total==1){
+              if(issues.data.issues[0].fields.status.name=="APPROVED"){
+                keepGoing = false
+              }
+            }
           }
         }
         
