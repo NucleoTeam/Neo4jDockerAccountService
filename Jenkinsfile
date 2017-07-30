@@ -63,6 +63,7 @@ pipeline {
                 keepGoing = false
               }
             }
+            sleep 10
           }
         }
         
