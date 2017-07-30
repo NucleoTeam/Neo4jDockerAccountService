@@ -29,6 +29,7 @@ pipeline {
           },
           "Save Artifact": {
             archiveArtifacts(artifacts: 'build/libs/*.jar', onlyIfSuccessful: true)
+            
           }
         )
       }
@@ -44,10 +45,11 @@ pipeline {
               issuetype: [id: '10000']
             ]
           ]
-          response = jiraNewIssue issue: releaseIssue, site: SynloadJira
+          response = jiraNewIssue issue: releaseIssue, site: 'SynloadJira'
           echo response.successful.toString()
           echo response.data.toString()
         }
+        
       }
     }
   }
