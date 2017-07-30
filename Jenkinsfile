@@ -36,7 +36,7 @@ pipeline {
     }
     stage('error') {
       steps {
-        jiraGetProjectVersions(idOrKey: '10000', site: 'SynloadJira')
+        jiraNewIssue(issue: [fields: [ project: [key: 'TESTPRO'], summary: 'New JIRA Created from Jenkins.', description: 'New JIRA Created from Jenkins.', issuetype: [name: 'Task']]], site: 'SynloadJira')
       }
     }
   }
