@@ -40,10 +40,9 @@ pipeline {
           def releaseIssue = [
             fields: [
               project: [ id: '10000' ],
-              summary: 'Approval For Release',
+              summary: BUILD_TAG,
               description: 'New release has been scheduled on project'+BUILD_TAG+' '+RUN_DISPLAY_URL,
-              issuetype: [id: '10002'],
-              build_tag: BUILD_TAG
+              issuetype: [id: '10002']
             ]
           ]
           jiraNewIssue(issue: releaseIssue, site: 'SynloadJira')
