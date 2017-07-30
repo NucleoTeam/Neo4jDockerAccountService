@@ -41,7 +41,7 @@ pipeline {
             fields: [
               project: [ id: '10000' ],
               summary: 'Approval For Release',
-              description: 'New release has been scheduled on project'+BUILD_TAG,
+              description: 'New release has been scheduled on project'+BUILD_TAG+' '+RUN_DISPLAY_URL,
               issuetype: [id: '10002']
             ]
           ]
