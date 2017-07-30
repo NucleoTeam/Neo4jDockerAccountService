@@ -53,15 +53,11 @@ pipeline {
     stage('error') {
       steps {
         script {
-          def releaseIssue = [
-            fields: [
-              project: [ id: '10000' ],
-              summary: BUILD_TAG,
-            ]
-          ]
-          def f = jiraGetIssue(issue: releaseIssue, site: 'SynloadJira')
           
-          echo f.data.toString()
+          def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
+          
+          
+          echo issues.toString()
         }
         
       }
