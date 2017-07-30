@@ -33,5 +33,22 @@ pipeline {
         )
       }
     }
+    stage('JIRA') {
+      steps {
+        script {
+          def releaseIssue = [
+            fields: [
+              project: [ id: '10000' ],
+              summary: 'Approval For Release',
+              description: 'New release has been scheduled on project x',
+              issuetype: [id: '10000']
+            ]
+          ]
+          response = jiraNewIssue issue: releaseIssue, site: SynloadJira
+          echo response.successful.toString()
+          echo response.data.toString()
+        }
+      }
+    }
   }
 }
