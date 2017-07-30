@@ -68,7 +68,7 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
               if(issues.data.issues[0].fields.status.name.equalsIgnoreCase("APPROVED")){
                 keepGoing = false
               }
-              if(issues.data.issues[0].fields.status.name.equalsIgnoreCase("REJECTED")){
+              if(issues.data.issues[0].fields.status.name.equalsIgnoreCase("REJECTED") || issues.data.issues[0].fields.status.name.equalsIgnoreCase("DONE")){
                 sh 'exit -1'
               }
             }
@@ -83,21 +83,18 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
           def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
           if(issues.data.total==1){
             
-            def newValues= [fields: [ project: [id: '10000' ],
-            status: [name: 'Done'],
-          ]]
-          
-          response = jiraEditIssue idOrKey: issues.data.issues[0].id, issue: newValues, site: 'SynloadJira'
-          
+            
+            def response = jiraAddComment idOrKey: issues.data.issues[0].id, comment: 'Uploading '+JOB_NAME+' Build '+BUILD_DISPLAY_NAME, site: 'SynloadJira'
+            echo response.toString()
+          }
         }
+        
       }
-      
+    }
+    stage('Publish Latest Image') {
+      steps {
+        sh 'docker push nucleoteam/neo4jdockeraccountservice:latest'
+      }
     }
   }
-  stage('Publish Latest Image') {
-    steps {
-      sh 'docker push nucleoteam/neo4jdockeraccountservice:latest'
-    }
-  }
-}
 }
