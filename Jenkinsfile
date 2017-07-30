@@ -57,7 +57,7 @@ pipeline {
         script {
           def keepGoing = true
           while(keepGoing ){
-            sleep 60
+            sleep 30
             def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
             if(issues.data.total==1){
               echo issues.data.issues[0].fields.status.name
