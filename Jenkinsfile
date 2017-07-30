@@ -34,9 +34,9 @@ pipeline {
         )
       }
     }
-    stage('') {
+    stage('error') {
       steps {
-        jiraGetProjectVersions 'rt'
+        jiraGetProjectVersions '1000'
       }
     }
   }
