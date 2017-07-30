@@ -42,14 +42,14 @@ pipeline {
               project: [ id: '10000' ],
               summary: 'Approval For Release',
               description: 'New release has been scheduled on project x',
-              issuetype: [id: '10000']
+              issuetype: [id: '10002']
             ]
           ]
           response = jiraNewIssue issue: releaseIssue, site: 'SynloadJira'
-          echo response.successful.toString()
           echo response.data.toString()
+          echo response.successful.toString()
+          
         }
-        
       }
     }
   }
