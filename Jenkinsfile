@@ -47,7 +47,7 @@ pipeline {
           ]
           def newIssue = jiraNewIssue(issue: releaseIssue, site: 'SynloadJira')
           
-          echo newIssue.data.toString();
+          echo newIssue.data.toString()
         }
         
       }
@@ -56,9 +56,11 @@ pipeline {
       steps {
         script {
           def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
+          if(issues.data.total==1){
+            
+          }
           
-          
-          echo issues.data.toString()
+          echo issues.data.issues[0].toString()
         }
         
       }
