@@ -57,10 +57,9 @@ pipeline {
         script {
           def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
           if(issues.data.total==1){
-            
+            echo issues.data.issues[0].toString()
           }
           
-          echo issues.data.issues[0].status.toString()
         }
         
       }
