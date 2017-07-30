@@ -34,7 +34,7 @@ pipeline {
         )
       }
     }
-    stage('JIRA') {
+    stage('Approval Request') {
       steps {
         script {
           def releaseIssue = [
@@ -52,11 +52,12 @@ pipeline {
         
       }
     }
-    stage('CheckJira') {
+    stage('Wait For Approval') {
       steps {
         script {
           def keepGoing = true
           while(keepGoing ){
+            sleep 60
             def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
             if(issues.data.total==1){
               echo issues.data.issues[0].fields.status.name
@@ -64,7 +65,6 @@ pipeline {
                 keepGoing = false
               }
             }
-            sleep 10
           }
         }
         
