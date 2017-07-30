@@ -45,7 +45,7 @@ pipeline {
               issuetype: [id: '10002']
             ]
           ]
-          response = jiraNewIssue issue: releaseIssue, site: 'SynloadJira'
+          response = jiraNewIssue(issue: releaseIssue, site: 'SynloadJira')
           print response.data.toString()
           print response.successful.toString()
         }
