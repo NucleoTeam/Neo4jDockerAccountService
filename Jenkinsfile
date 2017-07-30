@@ -64,10 +64,18 @@ pipeline {
               if(issues.data.issues[0].fields.status.name.equalsIgnoreCase("APPROVED")){
                 keepGoing = false
               }
+              if(issues.data.issues[0].fields.status.name.equalsIgnoreCase("REJECTED")){
+                sh 'exit -1'
+              }
             }
           }
         }
         
+      }
+    }
+    stage('Publish To DockerHub') {
+      steps {
+        sh 'docker push .'
       }
     }
   }
