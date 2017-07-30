@@ -46,8 +46,8 @@ pipeline {
             ]
           ]
           response = jiraNewIssue issue: releaseIssue, site: 'SynloadJira'
-          echo response.data.toString()
-          echo response.successful.toString()
+          print response.data.toString()
+          print response.successful.toString()
         }
         
       }
