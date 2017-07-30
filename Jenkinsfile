@@ -60,7 +60,7 @@ pipeline {
             def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
             if(issues.data.total==1){
               echo issues.data.issues[0].fields.status.name
-              if(issues.data.issues[0].fields.status.name.equalsIgnoreCase("APPPROVED")){
+              if(issues.data.issues[0].fields.status.name.equalsIgnoreCase("APPROVED")){
                 keepGoing = false
               }
             }
