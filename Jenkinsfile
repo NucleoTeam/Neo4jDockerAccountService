@@ -24,7 +24,11 @@ pipeline {
       steps {
         parallel(
           "Build Docker Image": {
-            sh 'mkdir dockerbuild/;cp build/libs/*.jar dockerbuild/app.jar;cp Dockerfile dockerbuild/Dockerfile;cd dockerbuild/;docker -t nucleoteam/neo4jdockeraccountservice:latest  build ./'
+            sh '''mkdir dockerbuild/
+cp build/libs/*.jar dockerbuild/app.jar
+cp Dockerfile dockerbuild/Dockerfile
+cd dockerbuild/
+docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
             
           },
           "Save Artifact": {
