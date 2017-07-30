@@ -77,10 +77,27 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
         
       }
     }
-    stage('Publish To DockerHub') {
+    stage('Set Done') {
       steps {
-        sh 'docker push nucleoteam/neo4jdockeraccountservice:latest'
+        script {
+          def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
+          if(issues.data.total==1){
+            
+            def newValues= [fields: [ project: [id: '10000' ],
+            status: [name: 'Done'],
+          ]]
+          
+          response = jiraEditIssue idOrKey: issues.data.issues[0].id, issue: newValues
+          
+        }
       }
+      
     }
   }
+  stage('Publish Latest Image') {
+    steps {
+      sh 'docker push nucleoteam/neo4jdockeraccountservice:latest'
+    }
+  }
+}
 }
