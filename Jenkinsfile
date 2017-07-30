@@ -36,7 +36,7 @@ pipeline {
     }
     stage('error') {
       steps {
-        jiraGetProjectVersions '1000'
+        jiraGetProjectVersions(idOrKey: '1000', site: 'SynloadJira')
       }
     }
   }
