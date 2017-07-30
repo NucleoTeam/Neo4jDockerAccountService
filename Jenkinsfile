@@ -45,7 +45,9 @@ pipeline {
               issuetype: [id: '10002']
             ]
           ]
-          jiraNewIssue(issue: releaseIssue, site: 'SynloadJira')
+          def newIssue = jiraNewIssue(issue: releaseIssue, site: 'SynloadJira')
+          
+          echo newIssue.data.toString();
         }
         
       }
@@ -56,7 +58,7 @@ pipeline {
           def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
           
           
-          echo issues.toString()
+          echo issues.data.toString()
         }
         
       }
