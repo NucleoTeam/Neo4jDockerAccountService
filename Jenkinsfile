@@ -51,10 +51,5 @@ pipeline {
         
       }
     }
-    stage('') {
-      steps {
-        waitUntil()
-      }
-    }
   }
 }
