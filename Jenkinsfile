@@ -31,19 +31,6 @@ pipeline {
                 )
             }
         }
-        stage('JIRA') {
-            def releaseIssue = [
-                fields: [
-                    project: [ id: '10000' ],
-                    summary: 'Approval For Release',
-                    description: 'New release has been scheduled on project x',
-                    issuetype: [id: '10000']
-                ]
-            ]
-            response = jiraNewIssue issue: releaseIssue
 
-            echo response.successful.toString()
-            echo response.data.toString()
-        }
     }
 }
