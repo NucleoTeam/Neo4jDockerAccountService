@@ -34,10 +34,5 @@ pipeline {
         )
       }
     }
-    stage('error') {
-      steps {
-        jiraNewIssue(issue: [fields: [ project: [key: 'TESTPRO'], summary: 'New JIRA Created from Jenkins.', description: 'New JIRA Created from Jenkins.', issuetype: [name: 'Task']]], site: 'SynloadJira')
-      }
-    }
   }
 }
