@@ -56,7 +56,7 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
           "Save Artifact": {
             script {
               echo "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Archived artifacts"
-              slackSend color: 'yellow', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Archived artifacts"
+              slackSend color: '#f1f430', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Archived artifacts"
             }
             
             archiveArtifacts(artifacts: 'build/libs/*.jar', onlyIfSuccessful: true)
