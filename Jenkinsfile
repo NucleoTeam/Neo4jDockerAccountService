@@ -14,7 +14,7 @@ pipeline {
           },
           "Slack Message": {
             script {
-              slackSend teamDomain: 'synload', token: 'token', channel: '#pipeline', message: "started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+              slackSend teamDomain: 'synload', channel: '#pipeline', message: "started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
             }
             
             
