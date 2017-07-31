@@ -6,19 +6,15 @@ pipeline {
         parallel(
           "BeginProcess": {
             echo 'Building Neo4jAccountLibrary'
+            script {
+              echo "Started the pipeline for ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+              slackSend color: 'good', message: "Started the pipeline for ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+            }
+            
             
           },
           "Delete old build": {
             sh 'rm -rf dockerbuild/'
-            
-          },
-          "Slack Message": {
-            script {
-              echo "Started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
-              slackSend color: 'good', message: "Started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
-              
-            }
-            
             
           }
         )
@@ -27,6 +23,11 @@ pipeline {
     stage('Build') {
       steps {
         sh 'chmod 0755 ./gradlew;./gradlew clean build --refresh-dependencies'
+        script {
+          echo "Compiling Spring application for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+          slackSend color: 'good', message: "Compiling Spring application for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+        }
+        
       }
     }
     stage('Docker Build') {
@@ -38,6 +39,11 @@ cp build/libs/*.jar dockerbuild/app.jar
 cp Dockerfile dockerbuild/Dockerfile
 cd dockerbuild/
 docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
+            script {
+              echo "Building Docker image for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+              slackSend color: 'good', message: "Building Docker image for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+            }
+            
             
           },
           "Save Artifact": {
@@ -61,6 +67,9 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
           def newIssue = jiraNewIssue(issue: releaseIssue, site: 'SynloadJira')
           
           echo newIssue.data.toString()
+          
+          echo "Waiting for approval for ${env.JOB_NAME} ${env.BUILD_NUMBER} (<"+newIssue.data.self+"|Jira Ticket>)"
+          slackSend color: 'good', message: "Waiting for approval for ${env.JOB_NAME} ${env.BUILD_NUMBER} (<"+newIssue.data.self+"|Jira Ticket>)"
         }
         
       }
@@ -76,10 +85,18 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
               echo issues.data.issues[0].fields.status.name
               if(issues.data.issues[0].fields.status.name.equalsIgnoreCase("APPROVED")){
                 keepGoing = false
+                echo "Build accepted for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                slackSend color: 'good', message: "Build accepted for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
               }
               if(issues.data.issues[0].fields.status.name.equalsIgnoreCase("REJECTED") || issues.data.issues[0].fields.status.name.equalsIgnoreCase("DONE")){
+                echo "Build rejected for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                slackSend color: 'good', message: "Build rejected for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
                 sh 'exit -1'
               }
+            }
+            if(keepGoing == true){
+              echo "Waiting for approval for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+              slackSend color: 'good', message: "Waiting for approval for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
             }
           }
         }
@@ -97,6 +114,9 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
                 
                 def response = jiraAddComment idOrKey: issues.data.issues[0].id, comment: 'Uploading '+JOB_NAME+' Build '+BUILD_DISPLAY_NAME, site: 'SynloadJira'
                 echo response.toString()
+                echo "Comment to release ticket for ${env.JOB_NAME} ${env.BUILD_NUMBER} (<"+response.data.self+"|Jira Comment>)"
+                slackSend color: 'good', message: "Comment to release ticket for ${env.JOB_NAME} ${env.BUILD_NUMBER} (<"+response.data.self+"|Jira Comment>)"
+                
               }
             }
             
@@ -115,6 +135,8 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
               def newIssue = jiraNewIssue(issue: releaseIssue, site: 'SynloadJira')
               
               echo newIssue.data.toString()
+              echo "QA ticket for ${env.JOB_NAME} ${env.BUILD_NUMBER} created (<"+newIssue.data.self+"|Jira Ticket>)"
+              slackSend color: 'good', message: "QA ticket for ${env.JOB_NAME} ${env.BUILD_NUMBER} created (<"+newIssue.data.self+"|Jira Ticket>)"
             }
             
             
@@ -124,12 +146,19 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
     }
     stage('Publish Latest Image') {
       steps {
-        sh 'docker push nucleoteam/neo4jdockeraccountservice:latest'
+        sh '''docker push nucleoteam/neo4jdockeraccountservice:latest
+echo "Docker image published to DockerHub for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+slackSend color: 'good', message: "Docker image published to DockerHub for ${env.JOB_NAME} ${env.BUILD_NUMBER}"'''
       }
     }
     stage('Deploy') {
       steps {
         rancher(environmentId: '1a5', ports: '8000:8080', environments: '1i180', confirm: true, image: 'nucleoteam/neo4jdockeraccountservice:latest', service: 'testapp/AccountManager', endpoint: 'http://212.47.248.38:8080/v2-beta', credentialId: 'rancher-server')
+        script {
+          echo "Deployed docker image to Rancher for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+          slackSend color: 'good', message: "Deployed docker image to Rancher for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+        }
+        
       }
     }
   }
