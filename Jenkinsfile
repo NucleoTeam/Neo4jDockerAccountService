@@ -123,10 +123,10 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
         
       }
     }
-    stage('Set Done') {
+    stage('Comment And QA') {
       steps {
         parallel(
-          "Set Done": {
+          "Write Comment On Release Ticket": {
             script {
               def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
               if(issues.data.total==1){
