@@ -14,7 +14,7 @@ pipeline {
           },
           "Slack Message": {
             script {
-              def f = slackSend color: 'good', message: 'Started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)'
+              def f = slackSend color: 'good', message: "Started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
               
               echo f.toString()
             }
