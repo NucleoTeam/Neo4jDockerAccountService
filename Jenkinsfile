@@ -22,31 +22,36 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh 'chmod 0755 ./gradlew;./gradlew clean build --refresh-dependencies'
         script {
           echo "Compiling Spring application for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
           slackSend color: 'good', message: "Compiling Spring application for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
         }
         
+        sh 'chmod 0755 ./gradlew;./gradlew clean build --refresh-dependencies'
       }
     }
     stage('Docker Build') {
       steps {
         parallel(
           "Build Docker Image": {
-            sh '''mkdir dockerbuild/
-cp build/libs/*.jar dockerbuild/app.jar
-cp Dockerfile dockerbuild/Dockerfile
-cd dockerbuild/
-docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
             script {
               echo "Building Docker image for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
               slackSend color: 'good', message: "Building Docker image for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
             }
             
+            sh '''mkdir dockerbuild/
+cp build/libs/*.jar dockerbuild/app.jar
+cp Dockerfile dockerbuild/Dockerfile
+cd dockerbuild/
+docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
             
           },
           "Save Artifact": {
+            script {
+              echo "Archived artifacts for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+              slackSend color: 'good', message: "Archived artifacts for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+            }
+            
             archiveArtifacts(artifacts: 'build/libs/*.jar', onlyIfSuccessful: true)
             
           }
@@ -68,8 +73,8 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
           
           echo newIssue.data.toString()
           
-          echo "Waiting for approval for ${env.JOB_NAME} ${env.BUILD_NUMBER} (<"+newIssue.data.self+"|Jira Ticket>)"
-          slackSend color: 'good', message: "Waiting for approval for ${env.JOB_NAME} ${env.BUILD_NUMBER} (<"+newIssue.data.self+"|Jira Ticket>)"
+          echo "Waiting for approval for ${env.JOB_NAME} ${env.BUILD_NUMBER} (<"+newIssue.data.self+"|Jira Ticket>) [60s cycle time]"
+          slackSend color: 'good', message: "Waiting for approval for ${env.JOB_NAME} ${env.BUILD_NUMBER} (<"+newIssue.data.self+"|Jira Ticket>) [60s cycle time]"
         }
         
       }
@@ -95,8 +100,8 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
               }
             }
             if(keepGoing == true){
-              echo "Waiting for approval for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-              slackSend color: 'good', message: "Waiting for approval for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+              echo "Waiting for approval for ${env.JOB_NAME} ${env.BUILD_NUMBER} [60s cycle time]"
+              slackSend color: 'good', message: "Waiting for approval for ${env.JOB_NAME} ${env.BUILD_NUMBER} [60s cycle time]"
             }
           }
         }
@@ -146,9 +151,10 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
     }
     stage('Publish Latest Image') {
       steps {
-        sh '''docker push nucleoteam/neo4jdockeraccountservice:latest
-echo "Docker image published to DockerHub for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-slackSend color: 'good', message: "Docker image published to DockerHub for ${env.JOB_NAME} ${env.BUILD_NUMBER}"'''
+        sh '''echo "Docker image published to DockerHub for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+slackSend color: 'good', message: "Docker image published to DockerHub for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+docker push nucleoteam/neo4jdockeraccountservice:latest
+'''
       }
     }
     stage('Deploy') {
