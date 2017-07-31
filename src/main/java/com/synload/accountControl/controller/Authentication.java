@@ -48,7 +48,7 @@ public class Authentication {
         if(accountRepository.getAccountByUser(user)==null) {
             Account account = new Account();
             account.setUser(user);
-            account.setPassword(password);
+            account.setPassword(AccountRules.hash(password));
             accountRepository.save(account);
             return account;
         }else{
