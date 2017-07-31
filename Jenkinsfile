@@ -151,10 +151,17 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
     }
     stage('Publish Latest Image') {
       steps {
-        sh '''echo "Docker image published to DockerHub for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-slackSend color: 'good', message: "Docker image published to DockerHub for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
-docker push nucleoteam/neo4jdockeraccountservice:latest
-'''
+        script {
+          echo "Docker publishing to DockerHub for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+          slackSend color: 'good', message: "Docker publishing to DockerHub for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+        }
+        
+        sh 'docker push nucleoteam/neo4jdockeraccountservice:latest'
+        script {
+          echo "Docker image published to DockerHub for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+          slackSend color: 'good', message: "Docker image published to DockerHub for ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+        }
+        
       }
     }
     stage('Deploy') {
