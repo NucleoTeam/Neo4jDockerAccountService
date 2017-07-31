@@ -150,7 +150,7 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
               echo newIssue.data.toString()
               
               echo "[${env.JOB_NAME} ${env.BUILD_NUMBER}] QA ticket created (<http://50.115.119.76:3000/browse/"+newIssue.data.key+"|JIRA_Ticket>)"
-              slackSend color: 'orange', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] QA ticket created (<http://50.115.119.76:3000/browse/"+newIssue.data.key+"|JIRA_Ticket>)"
+              slackSend color: '#f4b942', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] QA ticket created (<http://50.115.119.76:3000/browse/"+newIssue.data.key+"|JIRA_Ticket>)"
             }
             
             
