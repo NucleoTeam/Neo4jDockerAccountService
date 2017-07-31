@@ -93,7 +93,7 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
             
             
           },
-          "": {
+          "QA Release": {
             script {
               def releaseIssue = [
                 fields: [
