@@ -14,7 +14,7 @@ pipeline {
           },
           "Slack Message": {
             script {
-              slackSend(color: 'good', message: "started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+              slackSend color: 'good', message: 'Started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)'
             }
             
             
