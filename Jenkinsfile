@@ -8,7 +8,7 @@ pipeline {
             echo 'Building Neo4jAccountLibrary'
             script {
               echo "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Started the pipeline (<${env.BUILD_URL}|Open>)"
-              slackSend color: 'good', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Started the pipeline (<${env.BUILD_URL}|Open>)"
+              slackSend color: 'grey', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Started the pipeline (<${env.BUILD_URL}|Open>)"
             }
             
             
