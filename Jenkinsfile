@@ -11,6 +11,10 @@ pipeline {
           "Delete old build": {
             sh 'rm -rf dockerbuild/'
             
+          },
+          "Slack Message": {
+            slackSend(channel: '#pipeline', token: 'U7b9fUCQkZ3dD1uvLgFEyQj9', message: 'Build started for ${BUILD_TAG} - ${RUN_DISPLAY_URL}', teamDomain: 'synload', color: 'blue')
+            
           }
         )
       }
