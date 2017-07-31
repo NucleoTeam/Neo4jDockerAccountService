@@ -79,16 +79,38 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
     }
     stage('Set Done') {
       steps {
-        script {
-          def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
-          if(issues.data.total==1){
+        parallel(
+          "Set Done": {
+            script {
+              def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
+              if(issues.data.total==1){
+                
+                
+                def response = jiraAddComment idOrKey: issues.data.issues[0].id, comment: 'Uploading '+JOB_NAME+' Build '+BUILD_DISPLAY_NAME, site: 'SynloadJira'
+                echo response.toString()
+              }
+            }
             
             
-            def response = jiraAddComment idOrKey: issues.data.issues[0].id, comment: 'Uploading '+JOB_NAME+' Build '+BUILD_DISPLAY_NAME, site: 'SynloadJira'
-            echo response.toString()
+          },
+          "": {
+            script {
+              def releaseIssue = [
+                fields: [
+                  project: [ id: '10000' ],
+                  summary: BUILD_TAG,
+                  description: 'New release has been scheduled on project '+RUN_DISPLAY_URL,
+                  issuetype: [id: '10003']
+                ]
+              ]
+              def newIssue = jiraNewIssue(issue: releaseIssue, site: 'SynloadJira')
+              
+              echo newIssue.data.toString()
+            }
+            
+            
           }
-        }
-        
+        )
       }
     }
     stage('Publish Latest Image') {
