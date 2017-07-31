@@ -5,10 +5,7 @@ import com.synload.accountControl.repository.AccountRepository;
 import com.synload.accountControl.request.AccountRequest;
 import com.synload.accountControl.utils.AccountRules;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by Nathaniel on 7/23/2017.
@@ -19,7 +16,7 @@ public class Authentication {
     @Autowired
     AccountRepository accountRepository;
 
-    @RequestMapping("/login")
+    @PostMapping("/login")
     public Account login(@RequestBody AccountRequest accountRequest) {
         String user = accountRequest.getUser();
         String password = accountRequest.getPassword();
@@ -38,7 +35,7 @@ public class Authentication {
             return null;
         }
     }
-    @RequestMapping("/create")
+    @PostMapping("/create")
     public Account create(@RequestBody AccountRequest accountRequest){
         String user = accountRequest.getUser();
         String password = accountRequest.getPassword();
