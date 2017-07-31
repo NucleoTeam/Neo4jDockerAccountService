@@ -97,9 +97,6 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
           def counter=0
           while(keepGoing ){
             sleep times[counter]
-            if(counter<6){
-              counter++
-            }
             def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
             if(issues.data.total==1){
               echo issues.data.issues[0].fields.status.name
@@ -117,6 +114,9 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
             if(keepGoing == true){
               echo "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Waiting for approval "+times[counter]+" seconds"
               slackSend color: '#cecece', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Waiting for approval "+times[counter]+" seconds"
+            }
+            if(counter<6){
+              counter++
             }
           }
         }
