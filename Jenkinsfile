@@ -80,8 +80,8 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
           
           echo newIssue.data.toString()
           
-          echo "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Waiting for approval (<"+newIssue.data.self+"|Jira Ticket>) [60s cycle time]"
-          slackSend color: 'good', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Waiting for approval (<"+newIssue.data.self+"|Jira Ticket>) [60s cycle time]"
+          echo "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Waiting for approval (<http://50.115.119.76:3000/browse/"+newIssue.data.key+"|JIRA_Ticket>) [60s cycle time]"
+          slackSend color: 'good', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Waiting for approval (<http://50.115.119.76:3000/browse/"+newIssue.data.key+"|JIRA_Ticket>) [60s cycle time]"
         }
         
       }
@@ -122,13 +122,13 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
             script {
               def issues = jiraJqlSearch jql: 'summary ~ '+BUILD_TAG, site: 'SynloadJira', failOnError: true
               if(issues.data.total==1){
-                
+                echo issues.data[0].toString()
                 
                 def response = jiraAddComment idOrKey: issues.data.issues[0].id, comment: 'Uploading '+JOB_NAME+' Build '+BUILD_DISPLAY_NAME, site: 'SynloadJira'
                 echo response.toString()
                 
-                echo "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Comment to release ticket (<"+response.data.self+"|Jira Comment>)"
-                slackSend color: 'good', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Comment to release ticket (<"+response.data.self+"|Jira Comment>)"
+                echo "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Comment to release ticket (<http://synload.com:3000/browse/"+issues.data.issues[0].key+"?focusedCommentId="+response.data.id+"|JIRA_Comment>)"
+                slackSend color: 'good', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Comment to release ticket (<http://synload.com:3000/browse/"+issues.data.issues[0].key+"?focusedCommentId="+response.data.id+"|JIRA_Comment>)"
                 
               }
             }
@@ -149,8 +149,8 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
               
               echo newIssue.data.toString()
               
-              echo "[${env.JOB_NAME} ${env.BUILD_NUMBER}] QA ticket created (<"+newIssue.data.self+"|Jira Ticket>)"
-              slackSend color: 'good', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] QA ticket created (<"+newIssue.data.self+"|Jira Ticket>)"
+              echo "[${env.JOB_NAME} ${env.BUILD_NUMBER}] QA ticket created (<http://50.115.119.76:3000/browse/"+newIssue.data.key+"|JIRA_Ticket>)"
+              slackSend color: 'good', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] QA ticket created (<http://50.115.119.76:3000/browse/"+newIssue.data.key+"|JIRA_Ticket>)"
             }
             
             
@@ -162,8 +162,8 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
       steps {
         
         script {
-          echo "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Docker publishing to DockerHub"
-          slackSend color: 'good', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Docker publishing to DockerHub"
+          echo "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Docker image publishing to DockerHub"
+          slackSend color: 'good', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Docker image publishing to DockerHub"
         }
         
         sh 'docker push nucleoteam/neo4jdockeraccountservice:latest'
