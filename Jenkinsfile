@@ -13,7 +13,10 @@ pipeline {
             
           },
           "Slack Message": {
-            slackSend(channel: '#pipeline', token: 'U7b9fUCQkZ3dD1uvLgFEyQj9', message: 'Build started for ${env.BUILD_TAG} - ${env.RUN_DISPLAY_URL}', teamDomain: 'synload', color: 'blue')
+            script {
+              slackSend "started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+            }
+            
             
           }
         )
