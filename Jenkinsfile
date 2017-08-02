@@ -93,7 +93,7 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
       steps {
         script {
           def keepGoing = true
-          def times = [5,5,10,20,30,60,1800]
+          def times = [5,5,10,20,30,60,1800,3600]
           def counter=0
           while(keepGoing ){
             sleep times[counter]
@@ -115,7 +115,7 @@ docker build -t nucleoteam/neo4jdockeraccountservice:latest ./'''
               echo "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Waiting for approval "+times[counter]+" seconds"
               slackSend color: '#cecece', message: "[${env.JOB_NAME} ${env.BUILD_NUMBER}] Waiting for approval "+times[counter]+" seconds"
             }
-            if(counter<6){
+            if(counter<7){
               counter++
             }
           }
