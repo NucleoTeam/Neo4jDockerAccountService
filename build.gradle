@@ -42,14 +42,17 @@ targetCompatibility = 1.8
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
+
     compile "org.springframework.data:spring-data-neo4j:4.2.4.RELEASE"
+
     compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.57'
+
     testCompile("org.springframework.boot:spring-boot-starter-test")
 
     compile group: 'biz.paluch.redis', name: 'lettuce', version: '4.3.3.Final'
+
     compile 'org.owasp.encoder:encoder-esapi:1.2.1'
-    compile ("org.springframework.data:spring-data-redis:1.8.6.RELEASE") {
-        exclude group: 'commons-logging'
-    }
+
+    compile ("org.springframework.data:spring-data-redis:1.8.6.RELEASE")
 }
 

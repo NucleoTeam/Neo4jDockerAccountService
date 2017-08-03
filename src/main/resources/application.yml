@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: neo4jaccountservice
+  session:
+    store-type: none
 
 ribbon:
   ServerListRefreshInterval: 1000
