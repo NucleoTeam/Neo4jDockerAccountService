@@ -21,6 +21,9 @@ public class SessionRequest {
         this.key = Encode.forJava(key);
     }
 
+    public SessionRequest() {
+    }
+
     public SessionRequest(String session, String key) {
         this.session = session;
         this.key = key;
