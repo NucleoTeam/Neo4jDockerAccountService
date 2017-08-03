@@ -14,7 +14,7 @@ public class Account {
     public Long id;
 
     public String user;
-    public String password;
+    private String password;
 
     public HashMap<String, Object> permissions = new HashMap<String, Object>();
 

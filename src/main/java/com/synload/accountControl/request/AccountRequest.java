@@ -1,5 +1,7 @@
 package com.synload.accountControl.request;
 
+import org.owasp.encoder.Encode;
+
 /**
  * Created by Nathaniel on 7/23/2017.
  */
@@ -15,7 +17,7 @@ public class AccountRequest {
     }
 
     public void setUser(String user) {
-        this.user = user;
+        this.user = Encode.forJava(user);
     }
 
     public String getPassword() {
@@ -23,7 +25,7 @@ public class AccountRequest {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = Encode.forJava(password);
     }
 
     public String getSession() {
@@ -31,6 +33,6 @@ public class AccountRequest {
     }
 
     public void setSession(String session) {
-        this.session = session;
+        this.session = Encode.forJava(session);
     }
 }
