@@ -6,9 +6,8 @@ import org.owasp.encoder.Encode;
  * Created by Nathaniel on 7/23/2017.
  */
 public class AccountRequest {
-    public String user;
-    public String password;
-    public String session;
+    private String user=null;
+    private String password=null;
     public  AccountRequest(){
 
     }
@@ -26,13 +25,5 @@ public class AccountRequest {
 
     public void setPassword(String password) {
         this.password = Encode.forJava(password);
-    }
-
-    public String getSession() {
-        return session;
-    }
-
-    public void setSession(String session) {
-        this.session = Encode.forJava(session);
     }
 }

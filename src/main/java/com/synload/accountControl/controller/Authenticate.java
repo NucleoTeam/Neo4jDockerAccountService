@@ -1,7 +1,10 @@
 package com.synload.accountControl.controller;
 
 import com.synload.accountControl.domain.Account;
+import com.synload.accountControl.domain.SessionData;
 import com.synload.accountControl.repository.AccountRepository;
+import com.synload.accountControl.repository.SessionStorage;
+import com.synload.accountControl.request.AccountData;
 import com.synload.accountControl.request.AccountRequest;
 import com.synload.accountControl.utils.AccountRules;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,27 +19,24 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/authenticate")
-public class Authentication {
+public class Authenticate {
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    SessionStorage sessionStorage;
 
     @PostMapping("/login")
-    public String login(@RequestBody AccountRequest accountRequest, HttpServletRequest req) {
+    public String login(@RequestBody AccountRequest accountRequest) {
         String user = accountRequest.getUser();
         String password = accountRequest.getPassword();
         if(!AccountRules.password(password) || !AccountRules.user(user)){
             return null;
         }
-        if(req.getSession().getAttribute("account")!=null){
-            return (String) req.getSession().getAttribute("uuid");
-        }
         Account account = accountRepository.getAccountByUser(accountRequest.getUser());
         if(account!=null){
             if(account.getPassword().equals(AccountRules.hash(password))){
-                //session create
-                req.getSession().setAttribute("account", account.getId());
                 String uuid = UUID.randomUUID().toString();
-                req.getSession().setAttribute("uuid", uuid);
+                sessionStorage.save(new SessionData(uuid, account.getId()));
                 return uuid;
             }else{
                 return null;
@@ -46,41 +46,37 @@ public class Authentication {
         }
     }
     @PostMapping("/create")
-    public String create(@RequestBody AccountRequest accountRequest, HttpServletRequest req){
+    public String create(@RequestBody AccountRequest accountRequest){
         String user = accountRequest.getUser();
         String password = accountRequest.getPassword();
         if(!AccountRules.password(password) || !AccountRules.user(user)){
             return null;
-        }
-        if(req.getSession().getAttribute("account")!=null){
-            return (String) req.getSession().getAttribute("uuid");
         }
         if(accountRepository.getAccountByUser(user)==null) {
             Account account = new Account();
             account.setUser(user);
             account.setPassword(AccountRules.hash(password));
             accountRepository.save(account);
-            req.getSession().setAttribute("account", account.getId());
-            String uuid = UUID.randomUUID().toString();
-            req.getSession().setAttribute("uuid", uuid);
-            return uuid;
+            return login(accountRequest);
         }else{
             return null;
         }
     }
 
     @PostMapping("/session")
-    public String session(HttpServletRequest req){
-        if(req.getSession().getAttribute("account")!=null){
-            return (String) req.getSession().getAttribute("uuid");
+    public boolean session(@RequestBody AccountData accountData){
+        SessionData sessionData = sessionStorage.findBySessionUUID(accountData.getSession());
+        if(sessionData!=null){
+            return true;
         }else{
-            return null;
+            return false;
         }
     }
     @PostMapping("/logout")
-    public boolean logout(HttpServletRequest req){
-        if(req.getSession().getAttribute("account")!=null){
-            req.getSession().invalidate();
+    public boolean logout(@RequestBody AccountData accountData){
+        SessionData sessionData = sessionStorage.findBySessionUUID(accountData.getSession());
+        if(sessionData!=null){
+            sessionStorage.delete(sessionData);
             return true;
         }else{
             return false;
