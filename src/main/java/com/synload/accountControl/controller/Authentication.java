@@ -80,13 +80,8 @@ public class Authentication {
     @PostMapping("/logout")
     public boolean logout(HttpServletRequest req){
         if(req.getSession().getAttribute("account")!=null){
-            try {
-                req.logout();
-                return true;
-            }catch(ServletException e){
-                e.printStackTrace();
-                return false;
-            }
+            req.getSession().invalidate();
+            return true;
         }else{
             return false;
         }
