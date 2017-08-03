@@ -1,17 +1,15 @@
 package com.synload.accountControl.controller;
 
-import com.synload.accountControl.domain.Account;
+import com.synload.accountControl.domain.AccountData;
 import com.synload.accountControl.domain.SessionData;
-import com.synload.accountControl.repository.AccountRepository;
+import com.synload.accountControl.repository.AccountStorage;
 import com.synload.accountControl.repository.SessionStorage;
-import com.synload.accountControl.request.AccountData;
+import com.synload.accountControl.request.SessionRequest;
 import com.synload.accountControl.request.AccountRequest;
 import com.synload.accountControl.utils.AccountRules;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 /**
@@ -21,7 +19,7 @@ import java.util.UUID;
 @RequestMapping("/authenticate")
 public class Authenticate {
     @Autowired
-    AccountRepository accountRepository;
+    AccountStorage accountStorage;
     @Autowired
     SessionStorage sessionStorage;
 
@@ -32,11 +30,11 @@ public class Authenticate {
         if(!AccountRules.password(password) || !AccountRules.user(user)){
             return null;
         }
-        Account account = accountRepository.getAccountByUser(accountRequest.getUser());
-        if(account!=null){
-            if(account.getPassword().equals(AccountRules.hash(password))){
+        AccountData accountData = accountStorage.getAccountByUser(accountRequest.getUser());
+        if(accountData !=null){
+            if(accountData.getPassword().equals(AccountRules.hash(password))){
                 String uuid = UUID.randomUUID().toString();
-                sessionStorage.save(new SessionData(uuid, account.getId()));
+                sessionStorage.save(new SessionData(uuid, accountData.getId()));
                 return uuid;
             }else{
                 return null;
@@ -52,11 +50,11 @@ public class Authenticate {
         if(!AccountRules.password(password) || !AccountRules.user(user)){
             return null;
         }
-        if(accountRepository.getAccountByUser(user)==null) {
-            Account account = new Account();
-            account.setUser(user);
-            account.setPassword(AccountRules.hash(password));
-            accountRepository.save(account);
+        if(accountStorage.getAccountByUser(user)==null) {
+            AccountData accountData = new AccountData();
+            accountData.setUser(user);
+            accountData.setPassword(AccountRules.hash(password));
+            accountStorage.save(accountData);
             return login(accountRequest);
         }else{
             return null;
@@ -64,8 +62,8 @@ public class Authenticate {
     }
 
     @PostMapping("/session")
-    public boolean session(@RequestBody AccountData accountData){
-        SessionData sessionData = sessionStorage.findBySessionUUID(accountData.getSession());
+    public boolean session(@RequestBody SessionRequest sessionRequest){
+        SessionData sessionData = sessionStorage.findBySessionUUID(sessionRequest.getSession());
         if(sessionData!=null){
             return true;
         }else{
@@ -73,8 +71,8 @@ public class Authenticate {
         }
     }
     @PostMapping("/logout")
-    public boolean logout(@RequestBody AccountData accountData){
-        SessionData sessionData = sessionStorage.findBySessionUUID(accountData.getSession());
+    public boolean logout(@RequestBody SessionRequest sessionRequest){
+        SessionData sessionData = sessionStorage.findBySessionUUID(sessionRequest.getSession());
         if(sessionData!=null){
             sessionStorage.delete(sessionData);
             return true;

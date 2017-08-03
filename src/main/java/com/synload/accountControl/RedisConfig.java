@@ -10,7 +10,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 
 @Configuration
 @EnableRedisRepositories
-public class SessionRedisConfig {
+public class RedisConfig {
     @Bean
     public LettuceConnectionFactory connectionFactory() {
         LettuceConnectionFactory lettuce = new LettuceConnectionFactory();

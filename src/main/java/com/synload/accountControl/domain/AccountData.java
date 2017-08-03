@@ -9,7 +9,7 @@ import java.util.HashMap;
  * Created by Nathaniel on 7/23/2017.
  */
 @NodeEntity(label = "ACCOUNT")
-public class Account {
+public class AccountData {
     @GraphId
     public Long id;
 

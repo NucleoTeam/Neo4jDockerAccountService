@@ -2,7 +2,7 @@ package com.synload.accountControl.request;
 
 import org.owasp.encoder.Encode;
 
-public class AccountData {
+public class SessionRequest {
     private String session=null;
     private String key = null;
     public String getSession() {
@@ -21,7 +21,7 @@ public class AccountData {
         this.key = Encode.forJava(key);
     }
 
-    public AccountData(String session, String key) {
+    public SessionRequest(String session, String key) {
         this.session = session;
         this.key = key;
     }
