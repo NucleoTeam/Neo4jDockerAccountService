@@ -9,7 +9,7 @@ spring:
 
 eureka:
   instance:
-     leaseRenewalIntervalInSeconds: 60   # DO NOT DO THIS IN PRODUCTION
+     leaseRenewalIntervalInSeconds: 2   # DO NOT DO THIS IN PRODUCTION
   client:
     serviceUrl:
       defaultZone: http://service-discovery:8761/eureka/
