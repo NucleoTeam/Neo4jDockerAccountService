@@ -1,5 +1,6 @@
 package com.synload.accountControl.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 
@@ -14,11 +15,15 @@ public class AccountData {
     public Long id;
 
     public String user;
-    private String password;
 
-    public HashMap<String, Object> permissions = new HashMap<String, Object>();
+    @JsonIgnore
+    public String password;
 
-    public HashMap<String, Object> extras = new HashMap<String, Object>();
+    @JsonIgnore
+    public HashMap<String, String> permissions = new HashMap<String, String>();
+
+    @JsonIgnore
+    public HashMap<String, String> extras = new HashMap<String, String>();
 
     public Long getId() {
         return id;
@@ -44,19 +49,19 @@ public class AccountData {
         this.password = password;
     }
 
-    public HashMap<String, Object> getPermissions() {
+    public HashMap<String, String> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(HashMap<String, Object> permissions) {
+    public void setPermissions(HashMap<String, String> permissions) {
         this.permissions = permissions;
     }
 
-    public HashMap<String, Object> getExtras() {
+    public HashMap<String, String> getExtras() {
         return extras;
     }
 
-    public void setExtras(HashMap<String, Object> extras) {
+    public void setExtras(HashMap<String, String> extras) {
         this.extras = extras;
     }
 }

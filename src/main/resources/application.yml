@@ -3,9 +3,19 @@ server:
 
 spring:
   application:
-    name: neo4jaccountservice
+    name: account-service
   session:
     store-type: none
+
+eureka:
+  instance:
+     leaseRenewalIntervalInSeconds: 60   # DO NOT DO THIS IN PRODUCTION
+  client:
+    serviceUrl:
+      defaultZone: http://service-discovery:8761/eureka/
+    security:
+      basic:
+         enabled: false
 
 ribbon:
   ServerListRefreshInterval: 1000
