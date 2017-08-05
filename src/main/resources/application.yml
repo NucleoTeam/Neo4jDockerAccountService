@@ -9,8 +9,8 @@ spring:
 
 eureka:
   instance:
-    leaseRenewalIntervalInSeconds: 1
-    leaseExpirationDurationInSeconds: 2
+    leaseRenewalIntervalInSeconds: 10
+    leaseExpirationDurationInSeconds: 10
   client:
     serviceUrl:
       defaultZone: http://service-discovery:8761/eureka/
