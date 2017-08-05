@@ -8,6 +8,9 @@ spring:
     store-type: none
 
 eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 2
   client:
     serviceUrl:
       defaultZone: http://service-discovery:8761/eureka/
