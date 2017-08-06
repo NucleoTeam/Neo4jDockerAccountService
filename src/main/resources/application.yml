@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: account-service
+    name: AccountService
   session:
     store-type: none
 
