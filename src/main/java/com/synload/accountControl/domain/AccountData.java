@@ -3,16 +3,20 @@ package com.synload.accountControl.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Nathaniel on 7/23/2017.
  */
 @NodeEntity(label = "ACCOUNT")
 public class AccountData {
+
     @GraphId
-    public Long id;
+    public Long id=null;
 
     public String user;
 
@@ -20,10 +24,11 @@ public class AccountData {
     public String password;
 
     @JsonIgnore
-    public HashMap<String, String> permissions = new HashMap<String, String>();
+    @Relationship("per")
+    public Set<Permission> permissions = new Set<Permission();
 
     @JsonIgnore
-    public HashMap<String, String> extras = new HashMap<String, String>();
+    public Map<String, String> extras = new HashMap<String, String>();
 
     public Long getId() {
         return id;
@@ -49,7 +54,7 @@ public class AccountData {
         this.password = password;
     }
 
-    public HashMap<String, String> getPermissions() {
+    public Map<String, String> getPermissions() {
         return permissions;
     }
 
@@ -57,7 +62,7 @@ public class AccountData {
         this.permissions = permissions;
     }
 
-    public HashMap<String, String> getExtras() {
+    public Map<String, String> getExtras() {
         return extras;
     }
 
