@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,9 +35,12 @@ public class InternalInformation {
 
     @PostMapping("/info")
     public AccountData getAccount(@RequestBody SessionRequest sessionRequest){
-        SessionData sessionData = sessionStorage.findBySessionUUID(sessionRequest.getSession());
-        if(sessionData!=null){
-            return accountStorage.findOne(sessionData.getAccountID());
+        List<SessionData> sessions = sessionStorage.findBySessionUUID(sessionRequest.getSession());
+        if(sessions.size()>0) {
+            SessionData sessionData = sessions.get(0);
+            if (sessionData != null) {
+                return accountStorage.findOne(sessionData.getAccountID());
+            }
         }
         return null;
     }

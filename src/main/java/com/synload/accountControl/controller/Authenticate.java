@@ -10,6 +10,7 @@ import com.synload.accountControl.utils.AccountRules;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -63,21 +64,24 @@ public class Authenticate {
 
     @PostMapping("/session")
     public boolean session(@RequestBody SessionRequest sessionRequest){
-        SessionData sessionData = sessionStorage.findBySessionUUID(sessionRequest.getSession());
-        if(sessionData!=null){
-            return true;
-        }else{
-            return false;
+        List<SessionData> sessions = sessionStorage.findBySessionUUID(sessionRequest.getSession());
+        if(sessions.size()>0) {
+            if (sessions.get(0) != null) {
+                return true;
+            }
         }
+        return false;
     }
     @PostMapping("/logout")
     public boolean logout(@RequestBody SessionRequest sessionRequest){
-        SessionData sessionData = sessionStorage.findBySessionUUID(sessionRequest.getSession());
-        if(sessionData!=null){
-            sessionStorage.delete(sessionData);
-            return true;
-        }else{
-            return false;
+        List<SessionData> sessions = sessionStorage.findBySessionUUID(sessionRequest.getSession());
+        if(sessions.size()>0) {
+            SessionData sessionData = sessions.get(0);
+            if (sessionData != null) {
+                sessionStorage.delete(sessionData);
+                return true;
+            }
         }
+        return false;
     }
 }
