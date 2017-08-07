@@ -4,12 +4,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
-@RedisHash("sessionData")
+@RedisHash("sessions")
 public class SessionData {
 
     @Id String id;
 
-    @Indexed String sessionUUID;
+    @Indexed String uuid;
 
     @Indexed Long accountID;
 
@@ -22,11 +22,11 @@ public class SessionData {
     }
 
     public String getSessionUUID() {
-        return sessionUUID;
+        return uuid;
     }
 
     public void setSessionUUID(String sessionUUID) {
-        this.sessionUUID = sessionUUID;
+        this.uuid = sessionUUID;
     }
 
     public Long getAccountID() {
@@ -38,7 +38,7 @@ public class SessionData {
     }
 
     public SessionData(String sessionUUID, Long accountID) {
-        this.sessionUUID = sessionUUID;
+        this.uuid = sessionUUID;
         this.accountID = accountID;
     }
 

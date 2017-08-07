@@ -64,7 +64,7 @@ public class Authenticate {
 
     @PostMapping("/session")
     public boolean session(@RequestBody SessionRequest sessionRequest){
-        List<SessionData> sessions = sessionStorage.findBySessionUUID(sessionRequest.getSession());
+        List<SessionData> sessions = sessionStorage.findByUuidEquals(sessionRequest.getSession());
         if(sessions.size()>0) {
             if (sessions.get(0) != null) {
                 return true;
@@ -74,7 +74,7 @@ public class Authenticate {
     }
     @PostMapping("/logout")
     public boolean logout(@RequestBody SessionRequest sessionRequest){
-        List<SessionData> sessions = sessionStorage.findBySessionUUID(sessionRequest.getSession());
+        List<SessionData> sessions = sessionStorage.findByUuidEquals(sessionRequest.getSession());
         if(sessions.size()>0) {
             SessionData sessionData = sessions.get(0);
             if (sessionData != null) {
