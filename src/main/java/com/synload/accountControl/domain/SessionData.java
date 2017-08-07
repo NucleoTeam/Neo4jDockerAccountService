@@ -41,4 +41,7 @@ public class SessionData {
         this.sessionUUID = sessionUUID;
         this.accountID = accountID;
     }
+
+    public SessionData() {
+    }
 }
