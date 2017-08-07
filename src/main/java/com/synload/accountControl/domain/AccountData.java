@@ -5,18 +5,16 @@ import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Nathaniel on 7/23/2017.
  */
-@NodeEntity(label = "ACCOUNT")
+@NodeEntity(label = "Account")
 public class AccountData {
 
     @GraphId
-    public Long id=null;
+    public Long id;
 
     public String user;
 
@@ -24,11 +22,12 @@ public class AccountData {
     public String password;
 
     @JsonIgnore
-    @Relationship("per")
-    public Set<Permission> permissions = new Set<Permission();
+    @Relationship(type="HAS_PERMISSION")
+    public Set<PermissionData> permissions = new HashSet<PermissionData>();
 
     @JsonIgnore
-    public Map<String, String> extras = new HashMap<String, String>();
+    @Relationship(type="HAS_EXTRA")
+    public Set<ExtraData> extras = new HashSet<ExtraData>();
 
     public Long getId() {
         return id;
@@ -54,19 +53,19 @@ public class AccountData {
         this.password = password;
     }
 
-    public Map<String, String> getPermissions() {
+    public Set<PermissionData> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(HashMap<String, String> permissions) {
+    public void setPermissions(Set<PermissionData> permissions) {
         this.permissions = permissions;
     }
 
-    public Map<String, String> getExtras() {
+    public Set<ExtraData> getExtras() {
         return extras;
     }
 
-    public void setExtras(HashMap<String, String> extras) {
+    public void setExtras(Set<ExtraData> extras) {
         this.extras = extras;
     }
 }

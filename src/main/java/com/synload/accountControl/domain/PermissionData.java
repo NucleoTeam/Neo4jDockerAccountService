@@ -3,21 +3,28 @@ package com.synload.accountControl.domain;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
  * Created by Nathaniel on 8/6/2017.
  */
-@NodeEntity(label = "PERMISSION")
-public class Permission {
+@NodeEntity(label = "Permission")
+public class PermissionData {
 
     @GraphId
-    public Long id=null;
+    public Long id;
 
     public String name;
-    public String value;
 
-    public Permission() {
+    public List<String> flags = new ArrayList<>();
+
+    public PermissionData(String name) {
+        this.name = name;
+    }
+
+    public PermissionData() {
     }
 
     public Long getId() {
@@ -36,11 +43,11 @@ public class Permission {
         this.name = name;
     }
 
-    public String getValue() {
-        return value;
+    public List<String> getFlags() {
+        return flags;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setFlags(List<String> flags) {
+        this.flags = flags;
     }
 }

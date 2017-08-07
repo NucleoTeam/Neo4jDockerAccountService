@@ -2,8 +2,12 @@ package com.synload.accountControl.controller;
 
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.synload.accountControl.domain.AccountData;
+import com.synload.accountControl.domain.ExtraData;
+import com.synload.accountControl.domain.PermissionData;
 import com.synload.accountControl.domain.SessionData;
 import com.synload.accountControl.repository.AccountStorage;
+import com.synload.accountControl.repository.ExtraRepository;
+import com.synload.accountControl.repository.PermissionRepository;
 import com.synload.accountControl.repository.SessionStorage;
 import com.synload.accountControl.request.SessionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/account")
 public class InternalInformation {
@@ -19,6 +27,10 @@ public class InternalInformation {
     AccountStorage accountStorage;
     @Autowired
     SessionStorage sessionStorage;
+    @Autowired
+    ExtraRepository extraRepository;
+    @Autowired
+    PermissionRepository permissionRepository;
 
     @PostMapping("/info")
     public AccountData getAccount(@RequestBody SessionRequest sessionRequest){
@@ -33,8 +45,11 @@ public class InternalInformation {
     public Object getPermission(@RequestBody SessionRequest sessionRequest){
         AccountData accountData = getAccount(sessionRequest);
         if(accountData!=null){
-            if(accountData.getPermissions().containsKey(sessionRequest.getKey())){
-                return accountData.getPermissions().get(sessionRequest.getKey());
+            Set<PermissionData> perms = accountData.getPermissions().parallelStream().filter(e->{
+                return e.getName().equalsIgnoreCase(sessionRequest.getKey());
+            }).collect(Collectors.toSet());
+            if(perms.size()>0){
+                return perms.iterator().next();
             }
         }
         return null;
@@ -44,8 +59,11 @@ public class InternalInformation {
     public Object getExtra(@RequestBody SessionRequest sessionRequest){
         AccountData accountData = getAccount(sessionRequest);
         if(accountData!=null){
-            if(accountData.getExtras().containsKey(sessionRequest.getKey())){
-                return accountData.getExtras().get(sessionRequest.getKey());
+            Set<ExtraData> extras = accountData.getExtras().parallelStream().filter(e->{
+                return e.getName().equalsIgnoreCase(sessionRequest.getKey());
+            }).collect(Collectors.toSet());
+            if(extras.size()>0){
+                return extras.iterator().next();
             }
         }
         return null;
@@ -57,7 +75,22 @@ public class InternalInformation {
         String value = sessionRequest.getValue();
         String key = sessionRequest.getKey();
         if(accountData!=null && value!=null && key!=null && (getPermission(sessionRequest)==null || sessionRequest.isOverwrite())){
-            accountData.getPermissions().put( key, value );
+            Set<PermissionData> permissions = accountData.getPermissions().parallelStream().filter(e->{
+                return e.getName().equalsIgnoreCase(key);
+            }).collect(Collectors.toSet());
+            if(permissions.size()==0){
+                PermissionData permission = permissionRepository.getByName(key);
+                if(permission==null){
+                    permission = new PermissionData(key);
+                }
+                permission.setFlags(Arrays.asList(value.split(",")));
+                permissionRepository.save(permission);
+                accountData.getPermissions().add(permission);
+            }else{
+                PermissionData permission = permissions.iterator().next();
+                permission.setFlags(Arrays.asList(value.split(",")));
+                permissionRepository.save(permission);
+            }
             accountStorage.save(accountData);
             return true;
         }
@@ -70,7 +103,18 @@ public class InternalInformation {
         String value = sessionRequest.getValue();
         String key = sessionRequest.getKey();
         if(accountData!=null && value!=null && key!=null && (getExtra(sessionRequest)==null || sessionRequest.isOverwrite())){
-            accountData.getExtras().put( key, value );
+            Set<ExtraData> extras = accountData.getExtras().parallelStream().filter(e->{
+                return e.getName().equalsIgnoreCase(key);
+            }).collect(Collectors.toSet());
+            if(extras.size()==0){
+                ExtraData ed = new ExtraData(key, value);
+                extraRepository.save(ed);
+                accountData.getExtras().add(ed);
+            }else{
+                ExtraData ed = extras.iterator().next();
+                ed.setValue(value);
+                extraRepository.save(ed);
+            }
             accountStorage.save(accountData);
             return true;
         }

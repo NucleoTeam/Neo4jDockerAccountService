@@ -10,12 +10,9 @@ pipeline {
               echo "[${env.JOB_NAME} #${env.BUILD_NUMBER}] Started the pipeline (<${env.BUILD_URL}|Open>)"
               slackSend color: '#cecece', message: "[${env.JOB_NAME} #${env.BUILD_NUMBER}] Started the pipeline (<${env.BUILD_URL}|Open>)"
             }
-            
-            
           },
           "Delete old build": {
             sh 'rm -rf dockerbuild/'
-            
           }
         )
       }
