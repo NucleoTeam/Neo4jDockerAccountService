@@ -64,23 +64,18 @@ public class Authenticate {
 
     @PostMapping("/session")
     public boolean session(@RequestBody SessionRequest sessionRequest){
-        List<SessionData> sessions = sessionStorage.findByUuidEquals(sessionRequest.getSession());
-        if(sessions.size()>0) {
-            if (sessions.get(0) != null) {
-                return true;
-            }
+        SessionData sessionData = sessionStorage.findByUuidEquals(sessionRequest.getSession());
+        if (sessionData != null) {
+            return true;
         }
         return false;
     }
     @PostMapping("/logout")
     public boolean logout(@RequestBody SessionRequest sessionRequest){
-        List<SessionData> sessions = sessionStorage.findByUuidEquals(sessionRequest.getSession());
-        if(sessions.size()>0) {
-            SessionData sessionData = sessions.get(0);
-            if (sessionData != null) {
-                sessionStorage.delete(sessionData);
-                return true;
-            }
+        SessionData sessionData = sessionStorage.findByUuidEquals(sessionRequest.getSession());
+        if (sessionData != null) {
+            sessionStorage.delete(sessionData);
+            return true;
         }
         return false;
     }

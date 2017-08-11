@@ -35,12 +35,9 @@ public class InternalInformation {
 
     @PostMapping("/info")
     public AccountData getAccount(@RequestBody SessionRequest sessionRequest){
-        List<SessionData> sessions = sessionStorage.findByUuidEquals(sessionRequest.getSession());
-        if(sessions.size()>0) {
-            SessionData sessionData = sessions.get(0);
-            if (sessionData != null) {
-                return accountStorage.findOne(sessionData.getAccountID());
-            }
+        SessionData sessionData = sessionStorage.findByUuidEquals(sessionRequest.getSession());
+        if (sessionData != null) {
+            return accountStorage.findOne(sessionData.getAccountID());
         }
         return null;
     }
