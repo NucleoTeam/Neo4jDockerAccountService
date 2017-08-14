@@ -59,6 +59,8 @@ dependencies {
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
 
+    compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
+
     compile 'org.owasp.encoder:encoder-esapi:1.2.1'
 
     compile ("org.springframework.data:spring-data-redis:1.8.6.RELEASE")
