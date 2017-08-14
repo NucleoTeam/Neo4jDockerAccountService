@@ -59,8 +59,6 @@ dependencies {
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
 
-    compile group: 'biz.paluch.redis', name: 'lettuce', version: '4.3.3.Final'
-
     compile 'org.owasp.encoder:encoder-esapi:1.2.1'
 
     compile ("org.springframework.data:spring-data-redis:1.8.6.RELEASE")
