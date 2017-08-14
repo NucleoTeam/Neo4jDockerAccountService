@@ -1,4 +1,4 @@
-package com.synload.accountControl.repository;
+package com.synload.accountControl.repository.redis;
 
 import com.synload.accountControl.domain.SessionData;
 import org.springframework.data.repository.CrudRepository;

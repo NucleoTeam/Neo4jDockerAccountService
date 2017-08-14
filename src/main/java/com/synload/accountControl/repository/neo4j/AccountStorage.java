@@ -1,4 +1,4 @@
-package com.synload.accountControl.repository;
+package com.synload.accountControl.repository.neo4j;
 
 import com.synload.accountControl.domain.AccountData;
 import org.springframework.data.neo4j.repository.GraphRepository;

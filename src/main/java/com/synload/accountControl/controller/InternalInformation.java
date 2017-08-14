@@ -1,14 +1,13 @@
 package com.synload.accountControl.controller;
 
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.synload.accountControl.domain.AccountData;
 import com.synload.accountControl.domain.ExtraData;
 import com.synload.accountControl.domain.PermissionData;
 import com.synload.accountControl.domain.SessionData;
-import com.synload.accountControl.repository.AccountStorage;
-import com.synload.accountControl.repository.ExtraRepository;
-import com.synload.accountControl.repository.PermissionRepository;
-import com.synload.accountControl.repository.SessionStorage;
+import com.synload.accountControl.repository.neo4j.AccountStorage;
+import com.synload.accountControl.repository.neo4j.ExtraRepository;
+import com.synload.accountControl.repository.neo4j.PermissionRepository;
+import com.synload.accountControl.repository.redis.SessionStorage;
 import com.synload.accountControl.request.SessionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 

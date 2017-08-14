@@ -2,15 +2,14 @@ package com.synload.accountControl.controller;
 
 import com.synload.accountControl.domain.AccountData;
 import com.synload.accountControl.domain.SessionData;
-import com.synload.accountControl.repository.AccountStorage;
-import com.synload.accountControl.repository.SessionStorage;
+import com.synload.accountControl.repository.neo4j.AccountStorage;
+import com.synload.accountControl.repository.redis.SessionStorage;
 import com.synload.accountControl.request.SessionRequest;
 import com.synload.accountControl.request.AccountRequest;
 import com.synload.accountControl.utils.AccountRules;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 /**

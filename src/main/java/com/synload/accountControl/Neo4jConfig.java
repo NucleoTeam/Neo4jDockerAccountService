@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan("com.synload.accountControl")
-@EnableNeo4jRepositories("com.synload.accountControl.repository")
+@EnableNeo4jRepositories("com.synload.accountControl.repository.neo4j")
 @PropertySource("classpath:ogm.properties")
-public class PersistenceContext {
+public class Neo4jConfig {
     @Bean
     public SessionFactory sessionFactory() {
         return new SessionFactory("com.synload.accountControl.domain");

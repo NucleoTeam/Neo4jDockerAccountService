@@ -6,7 +6,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import(PersistenceContext.class)
+@Import(Neo4jConfig.class)
 @EnableDiscoveryClient
 public class Application {
 

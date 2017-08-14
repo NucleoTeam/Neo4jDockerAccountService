@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @Configuration
-@EnableRedisRepositories
+@EnableRedisRepositories(basePackages = "com.synload.accountControl.repository.redis")
 public class RedisConfig {
     @Bean
     public LettuceConnectionFactory connectionFactory() {
