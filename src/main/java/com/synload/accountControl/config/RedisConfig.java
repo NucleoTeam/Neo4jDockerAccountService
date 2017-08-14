@@ -20,8 +20,8 @@ public class RedisConfig {
         return jedis;
     }
     @Bean
-    public RedisTemplate<Object, String> redisTemplate() {
-        RedisTemplate<Object, String> redisTemplate = new RedisTemplate<Object, String>();
+    public RedisTemplate<String, Object> redisTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
         redisTemplate.setConnectionFactory(connectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         return redisTemplate;
