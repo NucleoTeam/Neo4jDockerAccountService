@@ -1,4 +1,4 @@
-package com.synload.accountControl;
+package com.synload.accountControl.config;
 
 import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.context.annotation.Bean;

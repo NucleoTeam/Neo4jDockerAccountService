@@ -1,5 +1,6 @@
 package com.synload.accountControl;
 
+import com.synload.accountControl.config.Neo4jConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
