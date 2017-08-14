@@ -33,7 +33,7 @@ public class InternalInformation {
 
     @PostMapping("/info")
     public AccountData getAccount(@RequestBody SessionRequest sessionRequest){
-        SessionData sessionData = sessionStorage.findByUuidEquals(sessionRequest.getSession());
+        SessionData sessionData = sessionStorage.findOneByUuidEquals(sessionRequest.getSession());
         if (sessionData != null) {
             return accountStorage.findOne(sessionData.getAccountID());
         }

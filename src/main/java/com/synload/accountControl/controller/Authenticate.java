@@ -63,7 +63,7 @@ public class Authenticate {
 
     @PostMapping("/session")
     public boolean session(@RequestBody SessionRequest sessionRequest){
-        SessionData sessionData = sessionStorage.findByUuidEquals(sessionRequest.getSession());
+        SessionData sessionData = sessionStorage.findOneByUuidEquals(sessionRequest.getSession());
         if (sessionData != null) {
             return true;
         }
@@ -71,7 +71,7 @@ public class Authenticate {
     }
     @PostMapping("/logout")
     public boolean logout(@RequestBody SessionRequest sessionRequest){
-        SessionData sessionData = sessionStorage.findByUuidEquals(sessionRequest.getSession());
+        SessionData sessionData = sessionStorage.findOneByUuidEquals(sessionRequest.getSession());
         if (sessionData != null) {
             sessionStorage.delete(sessionData);
             return true;
