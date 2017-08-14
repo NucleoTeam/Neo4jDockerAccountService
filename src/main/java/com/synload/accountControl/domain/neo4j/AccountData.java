@@ -1,4 +1,4 @@
-package com.synload.accountControl.domain;
+package com.synload.accountControl.domain.neo4j;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.neo4j.ogm.annotation.GraphId;

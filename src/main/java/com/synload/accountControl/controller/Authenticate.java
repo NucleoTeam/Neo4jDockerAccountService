@@ -1,7 +1,7 @@
 package com.synload.accountControl.controller;
 
-import com.synload.accountControl.domain.AccountData;
-import com.synload.accountControl.domain.SessionData;
+import com.synload.accountControl.domain.neo4j.AccountData;
+import com.synload.accountControl.domain.redis.SessionData;
 import com.synload.accountControl.repository.neo4j.AccountStorage;
 import com.synload.accountControl.repository.redis.SessionStorage;
 import com.synload.accountControl.request.SessionRequest;

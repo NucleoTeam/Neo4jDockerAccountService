@@ -1,4 +1,4 @@
-package com.synload.accountControl.domain;
+package com.synload.accountControl.domain.redis;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;

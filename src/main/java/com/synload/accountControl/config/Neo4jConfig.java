@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class Neo4jConfig {
     @Bean
     public SessionFactory sessionFactory() {
-        return new SessionFactory("com.synload.accountControl.domain");
+        return new SessionFactory("com.synload.accountControl.domain.neo4j");
     }
 
     @Bean

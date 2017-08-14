@@ -1,9 +1,9 @@
 package com.synload.accountControl.controller;
 
-import com.synload.accountControl.domain.AccountData;
-import com.synload.accountControl.domain.ExtraData;
-import com.synload.accountControl.domain.PermissionData;
-import com.synload.accountControl.domain.SessionData;
+import com.synload.accountControl.domain.neo4j.AccountData;
+import com.synload.accountControl.domain.neo4j.ExtraData;
+import com.synload.accountControl.domain.neo4j.PermissionData;
+import com.synload.accountControl.domain.redis.SessionData;
 import com.synload.accountControl.repository.neo4j.AccountStorage;
 import com.synload.accountControl.repository.neo4j.ExtraRepository;
 import com.synload.accountControl.repository.neo4j.PermissionRepository;
