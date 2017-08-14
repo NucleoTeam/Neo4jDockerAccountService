@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @EnableRedisRepositories(basePackages = "com.synload.accountControl.repository.redis")
@@ -18,11 +20,10 @@ public class RedisConfig {
         return jedis;
     }
     @Bean
-    RedisTemplate<?, ?> redisTemplate(RedisConnectionFactory connectionFactory) {
-
-        RedisTemplate<byte[], byte[]> template = new RedisTemplate<byte[], byte[]>();
-        template.setConnectionFactory(connectionFactory);
-
-        return template;
+    public RedisTemplate<Object, String> redisTemplate() {
+        RedisTemplate<Object, String> redisTemplate = new RedisTemplate<Object, String>();
+        redisTemplate.setConnectionFactory(connectionFactory());
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        return redisTemplate;
     }
 }
