@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface SessionStorage extends CrudRepository<SessionData, String> {
-    SessionData findOneByUuidEquals(String uuid);
+    SessionData findByUuid(String uuid);
     List<SessionData> findByAccountIDEquals(Long accountID);
 }
