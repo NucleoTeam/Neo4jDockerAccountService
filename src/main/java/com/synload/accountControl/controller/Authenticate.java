@@ -4,6 +4,7 @@ import com.synload.accountControl.domain.neo4j.AccountData;
 import com.synload.accountControl.domain.redis.SessionData;
 import com.synload.accountControl.repository.neo4j.AccountStorage;
 import com.synload.accountControl.repository.redis.SessionStorage;
+import com.synload.accountControl.repository.redis.impl.SessionStorageRepository;
 import com.synload.accountControl.request.SessionRequest;
 import com.synload.accountControl.request.AccountRequest;
 import com.synload.accountControl.utils.AccountRules;
@@ -21,7 +22,7 @@ public class Authenticate {
     @Autowired
     AccountStorage accountStorage;
     @Autowired
-    SessionStorage sessionStorage;
+    SessionStorageRepository sessionStorage;
 
     @PostMapping("/login")
     public String login(@RequestBody AccountRequest accountRequest) {
@@ -63,7 +64,7 @@ public class Authenticate {
 
     @PostMapping("/session")
     public boolean session(@RequestBody SessionRequest sessionRequest){
-        SessionData sessionData = sessionStorage.findByUuid(sessionRequest.getSession());
+        SessionData sessionData = sessionStorage.find(sessionRequest.getSession());
         if (sessionData != null) {
             return true;
         }
@@ -71,9 +72,9 @@ public class Authenticate {
     }
     @PostMapping("/logout")
     public boolean logout(@RequestBody SessionRequest sessionRequest){
-        SessionData sessionData = sessionStorage.findByUuid(sessionRequest.getSession());
+        SessionData sessionData = sessionStorage.find(sessionRequest.getSession());
         if (sessionData != null) {
-            sessionStorage.delete(sessionData);
+            sessionStorage.delete(sessionData.getUuid());
             return true;
         }
         return false;

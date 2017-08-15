@@ -4,8 +4,13 @@ import com.synload.accountControl.domain.redis.SessionData;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Map;
 
-public interface SessionStorage extends CrudRepository<SessionData, String> {
-    SessionData findByUuid(String uuid);
-    List<SessionData> findByAccountIDEquals(Long accountID);
+public interface SessionStorage{
+
+    void save(SessionData sessionData);
+
+    SessionData find(String uuid);
+
+    void delete(String id);
 }

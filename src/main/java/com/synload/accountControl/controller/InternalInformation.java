@@ -8,6 +8,7 @@ import com.synload.accountControl.repository.neo4j.AccountStorage;
 import com.synload.accountControl.repository.neo4j.ExtraRepository;
 import com.synload.accountControl.repository.neo4j.PermissionRepository;
 import com.synload.accountControl.repository.redis.SessionStorage;
+import com.synload.accountControl.repository.redis.impl.SessionStorageRepository;
 import com.synload.accountControl.request.SessionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ public class InternalInformation {
     @Autowired
     AccountStorage accountStorage;
     @Autowired
-    SessionStorage sessionStorage;
+    SessionStorageRepository sessionStorage;
     @Autowired
     ExtraRepository extraRepository;
     @Autowired
@@ -33,7 +34,7 @@ public class InternalInformation {
 
     @PostMapping("/info")
     public AccountData getAccount(@RequestBody SessionRequest sessionRequest){
-        SessionData sessionData = sessionStorage.findByUuid(sessionRequest.getSession());
+        SessionData sessionData = sessionStorage.find(sessionRequest.getSession());
         if (sessionData != null) {
             return accountStorage.findOne(sessionData.getAccountID());
         }
