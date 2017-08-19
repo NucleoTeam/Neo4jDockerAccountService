@@ -67,6 +67,8 @@ dependencies {
 
     compile 'org.owasp.encoder:encoder-esapi:1.2.1'
 
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+
     compile ("org.springframework.data:spring-data-redis:1.8.6.RELEASE")
 }
 
